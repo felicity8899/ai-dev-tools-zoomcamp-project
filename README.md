@@ -7,6 +7,10 @@ end to end — spec, tests, containers, CI/CD, observability, alerting, and an
 automated on-call responder agent — for the DataTalksClub **AI Dev Tools
 Zoomcamp** final project.
 
+> **Live demo: [tablenow-h988.onrender.com](https://tablenow-h988.onrender.com)**
+> (Render free tier — the service sleeps when idle, so the first load can take
+> about a minute to wake. Demo state lives in SQLite and resets on restart.)
+
 > Provenance: TableNow is a fresh, production-grade implementation written for
 > this course. An earlier prototype of the same idea by the same author exists
 > at [github.com/felicity8899/restaurant-waitlist-manager](https://github.com/felicity8899/restaurant-waitlist-manager)

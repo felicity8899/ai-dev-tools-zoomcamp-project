@@ -6,15 +6,14 @@ Two deployment shapes exist:
 2. **Image-based deploys** — GHCR images from the CD workflow (dev automatic,
    prod manual), rolled back by redeploying a previous tag.
 
-> **Status (checked live, 2026-11-09):** Hugging Face now requires a PRO
-> subscription to host Docker Spaces on the free `cpu-basic` hardware
-> (the create call returns HTTP 402 for non-PRO accounts), so the HF route
-> below is documented but **not currently live**. The free alternative is
-> **Render's free web service** (Docker deploy from the GitHub repo,
-> WebSockets supported, sleeps when idle): render.com → New → Web Service →
-> connect `felicity8899/ai-dev-tools-zoomcamp-project` → Docker → point the
-> Dockerfile path at a root `Dockerfile` copied from `Dockerfile.demo` →
-> set port 7860. Everything else about the single-container shape is the same.
+> **Status (live, 2026-11-09):** the demo is deployed on **Render's free
+> web service** at **[tablenow-h988.onrender.com](https://tablenow-h988.onrender.com)**
+> (service `tablenow`, Docker runtime from this repo's root `Dockerfile`,
+> region Virginia, auto-deploy on push to `main`; free tier sleeps when
+> idle, first load takes about a minute to wake). The Hugging Face route
+> below is documented but unavailable on a free account: HF now requires a
+> PRO subscription to host Docker Spaces on `cpu-basic` hardware (the
+> create call returns HTTP 402, verified 2026-11-09).
 
 ## 1. Hugging Face Spaces demo (Docker, SQLite)
 

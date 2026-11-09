@@ -1,0 +1,63 @@
+name: CD
+
+# Dev: every push to main builds and publishes images to GHCR (dev deploy).
+# Prod: manual workflow_dispatch, protected by the `production` environment
+# (enable required reviewers in repo Settings -> Environments so a human
+# approves). Rollback = dispatch this workflow with a previous known-good
+# tag; see docs/RUNBOOK.md#rollback.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag to deploy to prod (e.g. a previous commit SHA for rollback)"
+        required: true
+      deploy_prod:
+        description: "Deploy to production"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: tablenow-backend
+            context: ./backend
+          - image: tablenow-frontend
+            context: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:latest
+
+  deploy-prod:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy_prod
+    runs-on: ubuntu-latest
+    environment: production # human approval gate (required reviewers)
+    steps:
+      - name: Deploy tag ${{ inputs.image_tag }} to production
+        run: |
+          echo "Deploying ghcr.io/${{ github.repository_owner }}/tablenow-backend:${{ inputs.image_tag }}"
+          echo "Deploying ghcr.io/${{ github.repository_owner }}/tablenow-frontend:${{ inputs.image_tag }}"
+          # Wire the target host here (SSH / PaaS CLI / kubectl set image).
+          # The images are immutable per tag, so this step is identical for
+          # a fresh deploy and for a rollback to a previous tag.

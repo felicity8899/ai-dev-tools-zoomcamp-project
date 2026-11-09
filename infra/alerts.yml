@@ -1,0 +1,30 @@
+# Alerting on USER IMPACT on the key journey (joining the waitlist),
+# deliberately not on CPU/memory. See docs/SPEC.md for the SLO definitions.
+groups:
+  - name: tablenow-join-journey
+    rules:
+      - alert: JoinWaitlistErrorRateHigh
+        # >5% of join attempts failing over a 2-minute window, sustained 1 min.
+        expr: |
+          sum(rate(tablenow_join_requests_total{result="error"}[2m]))
+            / sum(rate(tablenow_join_requests_total[2m])) > 0.05
+        for: 1m
+        labels:
+          severity: page
+          journey: join_waitlist
+        annotations:
+          summary: "Join-waitlist error rate above 5%"
+          description: "Guests are failing to join the waitlist: {{ $value | humanizePercentage }} of joins errored in the last 2 minutes."
+
+      - alert: JoinWaitlistLatencyHigh
+        # p95 join latency above 2 s over 5 minutes, sustained 2 min.
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(tablenow_join_latency_seconds_bucket[5m])) by (le)) > 2
+        for: 2m
+        labels:
+          severity: page
+          journey: join_waitlist
+        annotations:
+          summary: "Join-waitlist p95 latency above 2s"
+          description: "Joining the waitlist is slow: p95 latency is {{ $value }}s."

@@ -1,0 +1,13 @@
+# Alertmanager: page the responder agent (webhook) for journey alerts.
+route:
+  receiver: responder-agent
+  group_by: ["alertname", "journey"]
+  group_wait: 5s
+  group_interval: 30s
+  repeat_interval: 5m
+
+receivers:
+  - name: responder-agent
+    webhook_configs:
+      - url: http://agent:8090/alerts
+        send_resolved: true

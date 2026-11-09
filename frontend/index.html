@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TableNow — Restaurant Waitlist</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🍽️ TableNow</h1>
+    <nav>
+      <button id="tab-host" class="tab active">Host dashboard</button>
+      <button id="tab-guest" class="tab">Guest join</button>
+    </nav>
+    <span id="conn" class="conn">connecting…</span>
+  </header>
+
+  <!-- Host dashboard -->
+  <main id="view-host">
+    <section>
+      <h2>Waitlist</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Name</th><th>Party</th><th>Est. wait</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="queue-body"></tbody>
+      </table>
+      <p id="queue-empty" class="muted" hidden>No one is waiting.</p>
+    </section>
+    <section>
+      <h2>Tables</h2>
+      <div id="tables" class="tables"></div>
+    </section>
+  </main>
+
+  <!-- Guest join view -->
+  <main id="view-guest" hidden>
+    <section>
+      <h2>Join the waitlist</h2>
+      <form id="join-form">
+        <label>Name <input id="join-name" required maxlength="80" /></label>
+        <label>Party size
+          <input id="join-size" type="number" min="1" max="20" value="2" required />
+        </label>
+        <label>Phone (optional) <input id="join-phone" maxlength="32" /></label>
+        <button type="submit">Join waitlist</button>
+      </form>
+      <div id="join-result" class="card" hidden></div>
+      <p id="join-error" class="error" hidden></p>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

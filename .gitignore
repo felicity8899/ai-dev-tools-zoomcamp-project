@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.db
+node_modules/
+
+# Incident reports are written by the agent at runtime; keep only samples.
+incidents/*
+!incidents/.gitkeep
+!incidents/sample-*.md

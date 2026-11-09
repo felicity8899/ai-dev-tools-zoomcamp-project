@@ -26,4 +26,4 @@ jobs:
         with:
           node-version: "20"
       - name: Run frontend module tests (node:test)
-        run: node --test frontend/test/
+        run: node --test frontend/test/*.mjs

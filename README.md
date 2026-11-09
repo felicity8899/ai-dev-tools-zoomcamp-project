@@ -84,7 +84,7 @@ demo is scripted in [docs/RUNBOOK.md](docs/RUNBOOK.md).
 | Application | `docker compose up` runs the full stack |
 | Testing | `make test` — 23 pytest + 6 node tests |
 | Containerization | `backend/Dockerfile`, `frontend/Dockerfile`, `agent/Dockerfile`, `docker-compose.yml` |
-| Deployment | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Hugging Face Spaces, single-container SQLite demo (`Dockerfile.demo`) |
+| Deployment | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — live on Render free tier, single-container SQLite demo (root `Dockerfile`) |
 | CI/CD | `.github/workflows/ci.yml` (tests on push/PR), `cd.yml` (GHCR images, manual prod, rollback = redeploy previous tag) |
 | Observability | OTEL traces + Prometheus metrics + JSON logs, shared trace_id; Grafana dashboard in `infra/grafana/` |
 | Alerting on user impact | `infra/alerts.yml` — join error-rate / latency rules |
